@@ -52,14 +52,14 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.5</version>
+			<version>${commons-codec-commons-codec-version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
+			<version>${commons-httpclient-commons-httpclient-version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -87,7 +87,7 @@
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
+			<version>${commons-logging-commons-logging-version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
