@@ -6,8 +6,18 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
 version="1.2">
     <component>
-        <component-type>EventCreator</component-type>
-        <component-class>com.idega.block.caldav.presentation.EventCreator</component-class>
+        <component-type>PublicEventCreator</component-type>
+        <component-class>com.idega.block.caldav.presentation.PublicEventCreator</component-class>
+        <component-extension>
+            <idegaweb-info>
+                <builder-visible>true</builder-visible>
+                <object-type>jsf.uicomponent</object-type>
+            </idegaweb-info>
+        </component-extension>
+    </component>
+    <component>
+        <component-type>PrivateEventCreator</component-type>
+        <component-class>com.idega.block.caldav.presentation.PrivateEventCreator</component-class>
         <component-extension>
             <idegaweb-info>
                 <builder-visible>true</builder-visible>

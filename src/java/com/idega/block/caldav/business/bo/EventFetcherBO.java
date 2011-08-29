@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.idega.block.caldav.business.eventFetcher.bo;
+package com.idega.block.caldav.business.bo;
 
 import java.io.InputStream;
 import java.util.Date;

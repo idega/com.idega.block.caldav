@@ -1,4 +1,4 @@
-package com.idega.block.caldav.business.eventFetcher.bo.impl;
+package com.idega.block.caldav.business.bo.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.idega.block.caldav.business.CalendarEvent;
-import com.idega.block.caldav.business.eventFetcher.bo.EventFetcherBO;
+import com.idega.block.caldav.business.bo.EventFetcherBO;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.util.CoreConstants;
 import com.idega.util.StringUtil;
@@ -222,7 +222,7 @@ public class EventFetcherBOImpl extends DefaultSpringBean implements EventFetche
     }
     
     /**
-     * @see com.idega.block.caldav.business.eventFetcher.bo.EventFetcherBO#getAllPublicEvents(Date startDate, Date endDate, 
+     * @see com.idega.block.caldav.business.bo.EventFetcherBO#getAllPublicEvents(Date startDate, Date endDate, 
             String creatorGroup, String calendarPath, String application)
      */
     public List<CalendarEvent> getAllPublicEvents(Date startDate, Date endDate, 
