@@ -92,7 +92,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.idega.block.caldav.IWBundleStarter;
-import com.idega.block.login.remote.RemoteLoginService;
 import com.idega.block.web2.business.JQuery;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.presentation.IWContext;
