@@ -111,8 +111,8 @@ public class BedeworkLoginServiceBean extends DefaultSpringBean implements Remot
 	public UIComponent getUIComponentForLogin(FacesContext context) {
 		Layer script = new Layer();
 		
-		String calAdminLogin = "{url: 'http://bedework.sidan.is/caladmin/j_security_check?j_security_check=login&b=de', userNameParam: 'j_username', passwordParam: 'j_password'}";
-		String uCalLogin = "{url: 'http://bedework.sidan.is/ucal/j_security_check?j_security_check=login&b=de', userNameParam: 'j_username', passwordParam: 'j_password'}";
+		String calAdminLogin = "{initUrl: 'http://bedework.sidan.is/caladmin/', url: 'http://bedework.sidan.is/caladmin/j_security_check?j_security_check=login&b=de', userNameParam: 'j_username', passwordParam: 'j_password'}";
+		String uCalLogin = "{initUrl: 'http://bedework.sidan.is/ucal/', url: 'http://bedework.sidan.is/ucal/j_security_check?j_security_check=login&b=de', userNameParam: 'j_username', passwordParam: 'j_password'}";
 		String action = "LoginHelper.remoteLogins = [" + uCalLogin + ", " + calAdminLogin + "];";
 		if (CoreUtil.isSingleComponentRenderingProcess(context))
 			script.add(PresentationUtil.getJavaScriptAction(action));
