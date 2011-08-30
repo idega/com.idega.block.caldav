@@ -82,21 +82,17 @@
  */
 package com.idega.block.caldav.bean;
 
-import java.util.Arrays;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.idega.block.caldav.IWBundleStarter;
 import com.idega.block.login.remote.RemoteLoginService;
-import com.idega.block.web2.business.JQuery;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
+import com.idega.util.CoreUtil;
 import com.idega.util.PresentationUtil;
 
 /**
@@ -107,33 +103,23 @@ import com.idega.util.PresentationUtil;
  * @version 1.0.0 2011.08.24
  * @author martynas
  */
-@Scope("request")
 @Service
-public class BedeworkLoginServiceBean extends DefaultSpringBean implements RemoteLoginService{
-
-    @Autowired
-    private JQuery jquery;
-    
-    /**
-     * @see com.idega.block.login.remote.RemoteLoginService#getUIComponentForLogin(com.idega.presentation.ui.SubmitButton)
-     */
-    //@Override
-    public UIComponent getUIComponentForLogin(FacesContext context) {
-        Layer div = new Layer();
-        
-        div.setStyleAttribute("display: none;");
-        div.setStyleClass("remoteLoginContainer");
-        
-        IWContext iwc = IWContext.getIWContext(context);
-        PresentationUtil.addJavaScriptSourcesLinesToHeader(iwc, Arrays.asList(
-                jquery.getBundleURIToJQueryLib(),
-                getBundle(IWBundleStarter.IW_BUNDLE_IDENTIFIER).getVirtualPathWithFileNameString("javascript/loginToBedework.js"))
-        );
-        String action = PresentationUtil.getJavaScriptAction("jQuery(window).load(function() {RemoteLoginHelper.initiateRemoteLogin('" +div.getId()+ "');});");
-        div.add(action);
-        
-        return div;
-    }
+@Scope("request")
+public class BedeworkLoginServiceBean extends DefaultSpringBean implements RemoteLoginService {
+	
+	//@Override
+	public UIComponent getUIComponentForLogin(FacesContext context) {
+		Layer script = new Layer();
+		
+		String action = "LoginHelper.remoteLogins = [{url: 'http://bedework.sidan.is/caladmin/j_security_check?j_security_check=login', userNameParam: 'j_username', passwordParam: 'j_password'}, " +
+				"{url: 'http://bedework.sidan.is/ucal/j_security_check?j_security_check=login', userNameParam: 'j_username', passwordParam: 'j_password'}];";
+		if (CoreUtil.isSingleComponentRenderingProcess(context))
+			script.add(PresentationUtil.getJavaScriptAction(action));
+		else
+			PresentationUtil.addJavaScriptActionToBody(IWContext.getIWContext(context), "jQuery(window).load(function() {" + action + "});");
+		
+		return script;
+	}
 
     /**
      * @see com.idega.block.login.remote.RemoteLoginService#getUIComponentForLogout()
