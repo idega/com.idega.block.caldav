@@ -218,7 +218,18 @@ public class EventFetcherBOImpl extends DefaultSpringBean implements EventFetche
     }
    
     public List<CalendarEvent> getAllEvents(){
-        return this.getAllPublicEvents(Timestamp.valueOf("2011-08-18 00:00:00"), null, "agrp_calsuite-MainCampus", "/public/cals/MainCal", null);
+        return getAllPublicEventsFromAllCalendars(Timestamp.valueOf("2011-08-25 00:00:00"), Timestamp.valueOf("2011-09-05 00:00:00"));
+    }
+    
+    public List<CalendarEvent> getAllPublicEventsFromAllCalendars(Timestamp startDate, Timestamp endDate){
+        List<CalendarEvent> list = new ArrayList<CalendarEvent>();
+        //list.addAll(getAllPublicEvents(startDate, endDate, null, "/public/cals/MainCal", null));
+        //list.addAll(getAllPublicEvents(startDate, endDate, null, "/public/cals/AnotherCal", null));
+        //list.addAll(getAllPublicEvents(startDate, endDate, null, "/public/cals/eHubCalendar", null));
+        //list.addAll(getAllPublicEvents(startDate, endDate, null, "/public/cals/sagaBookCalendar", null));
+        //list.addAll(getAllPublicEvents(startDate, endDate, "agrp_calsuite-eHub", "/public/cals/AnotherCal", null));
+        list.addAll(getAllPublicEvents(null, null, null, "/public/cals/MainCal", null));
+        return list;
     }
     
     /**
