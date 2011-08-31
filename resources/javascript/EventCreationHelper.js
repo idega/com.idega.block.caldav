@@ -1,11 +1,16 @@
 EventCreationHelper = {
 		showPublicEventCreationWindow : function() {
-			jQuery('a.invisibleLink').attr("href", "http://bedework.sidan.is/caladmin/event/showModForm.rdo");
+			jQuery('a.invisibleLink').attr("href", "http://bedework.sidan.is/caladmin/event/initAddEvent.do?b=de");
 			jQuery('a.invisibleLink').trigger('click');
 		}
 
 		,showPrivateEventCreationWindow : function() {
 			jQuery('a.invisibleLink').attr("href", "http://bedework.sidan.is/ucal");
+			jQuery('a.invisibleLink').trigger('click');
+		}
+		
+		,showPublicEventsWindow : function() {
+			jQuery('a.invisibleLink').attr("href", "http://bedework.sidan.is/cal/main/showMain.rdo");
 			jQuery('a.invisibleLink').trigger('click');
 		}
 		
