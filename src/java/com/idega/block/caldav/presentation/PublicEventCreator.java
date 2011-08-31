@@ -37,18 +37,28 @@ public class PublicEventCreator extends IWBaseComponent {
     @Autowired
     private Web2Business web2Business;
     
+    private String onEventCreated;
+    
     public PublicEventCreator() {
         ELUtil.getInstance().autowire(this);
     }
     
-    @Override
+    public String getOnEventCreated() {
+		return onEventCreated;
+	}
+
+	public void setOnEventCreated(String onEventCreated) {
+		this.onEventCreated = onEventCreated;
+	}
+
+	@Override
     protected void initializeComponent(FacesContext context) {
         super.initializeComponent(context);
             
-            IWContext iwc = IWContext.getIWContext(context);
-            if (!iwc.isLoggedOn()) {
-                return;
-            }
+        IWContext iwc = IWContext.getIWContext(context);
+        if (!iwc.isLoggedOn()) {
+        	return;
+        }
         
 //            if (!iwc.hasRole(CaldavConstants.caldavAdmin)) {
 //            
@@ -75,7 +85,7 @@ public class PublicEventCreator extends IWBaseComponent {
             jsFiles.addAll(web2Business.getBundleURIsToFancyBoxScriptFiles());
             jsFiles.add(bundle.getVirtualPathWithFileNameString("javascript/EventCreationHelper.js"));
             PresentationUtil.addJavaScriptSourcesLinesToHeader(iwc, jsFiles);
-            String action = "EventCreationHelper.initializeHiddenLink();";
+            String action = "EventCreationHelper.initializeHiddenLink({oncomplete: ".concat(getOnEventCreated()).concat("});");
             if (!CoreUtil.isSingleComponentRenderingProcess(iwc)) {
                 action = "jQuery(window).load(function() {" + action + "});";
             }

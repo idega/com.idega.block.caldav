@@ -14,7 +14,7 @@ EventCreationHelper = {
 			jQuery('a.invisibleLink').trigger('click');
 		}
 		
-		,initializeHiddenLink : function(){
+		,initializeHiddenLink : function(params){
 			if (jQuery('a.invisibleLink').length == 0)
 				jQuery(document.body).append("<a class='invisibleLink iframe' style='display: none;'></a>");
 			
@@ -26,8 +26,10 @@ EventCreationHelper = {
 				,width: windowinfo.getWindowWidth() * 0.8
 				,height: windowinfo.getWindowHeight() * 0.8
 				,autoDimensions: false
-				,onComplete: function() {}
-				,onClosed:function() {}
+				,onClosed:function() {
+					if (params.oncomplete != null)
+						params.oncomplete();
+				}
 			});
 		}
 }
