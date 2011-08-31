@@ -107,25 +107,21 @@ import com.idega.util.PresentationUtil;
 @Scope("request")
 public class BedeworkLoginServiceBean extends DefaultSpringBean implements RemoteLoginService {
 	
-	//@Override
 	public UIComponent getUIComponentForLogin(FacesContext context) {
 		Layer script = new Layer();
 		
 		String calAdminLogin = "{initUrl: 'http://bedework.sidan.is/caladmin/', url: 'http://bedework.sidan.is/caladmin/j_security_check?j_security_check=login&b=de', userNameParam: 'j_username', passwordParam: 'j_password'}";
 		String uCalLogin = "{initUrl: 'http://bedework.sidan.is/ucal/', url: 'http://bedework.sidan.is/ucal/j_security_check?j_security_check=login&b=de', userNameParam: 'j_username', passwordParam: 'j_password'}";
 		String action = "LoginHelper.remoteLogins = [" + uCalLogin + ", " + calAdminLogin + "];";
-		if (CoreUtil.isSingleComponentRenderingProcess(context))
+		IWContext iwc = IWContext.getIWContext(context);
+		if (CoreUtil.isSingleComponentRenderingProcess(iwc))
 			script.add(PresentationUtil.getJavaScriptAction(action));
 		else
-			PresentationUtil.addJavaScriptActionToBody(IWContext.getIWContext(context), "jQuery(window).load(function() {" + action + "});");
+			PresentationUtil.addJavaScriptActionToBody(iwc, "jQuery(window).load(function() {" + action + "});");
 		
 		return script;
 	}
 
-    /**
-     * @see com.idega.block.login.remote.RemoteLoginService#getUIComponentForLogout()
-     */
-    //@Override
     public UIComponent getUIComponentForLogout() {
         // TODO Auto-generated method stub
         return null;
