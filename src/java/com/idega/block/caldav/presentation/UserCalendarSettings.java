@@ -1,5 +1,6 @@
 package com.idega.block.caldav.presentation;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,8 +113,13 @@ public class UserCalendarSettings extends Block {
 		distributeEvents.setStyleClass("distributeEvents");
 		distributeEvents.add(new Heading3(iwrb.getLocalizedString("distribute_events_url", "Distribute all my events to my calanders with the following URL").concat(":")));
 		Link webcal = new Link(iwrb.getLocalizedString("subscribe_to_your_calendars", "Subscribe to your calendars"));
-		webcal.setURL("webcal://");
+		String url = "webcal://bedework.sidan.is/pubcaldav";
+		try {
+			url = url.concat(ListUtil.isEmpty(calendarPaths) ? "public/aliases/Training/Handball" : URLDecoder.decode(calendarPaths.get(0), CoreConstants.ENCODING_UTF8));
+		} catch (Exception e) {}
+		webcal.setURL(url);
 		distributeEvents.add(webcal);
+		distributeEvents.add("&nbsp;<a href=\"http://bedework.sidan.is/cal/misc/export.gdo?b=de&calPath=%2Fpublic%2Faliases%2FTraining%2FHandball&guid=CAL-ff808081-321fcf29-0132-1ff90ea4-000000f1demobedework@mysite.edu&recurrenceId=&nocache=no&contentName=CAL-ff808081-321fcf29-0132-1ff90ea4-000000f1demobedework@mysite.edu.ics\">".concat(iwrb.getLocalizedString("download_calendar", "Download calendar")).concat("</a>"));
 	}
 	
 }
