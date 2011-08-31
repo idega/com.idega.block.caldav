@@ -1,6 +1,6 @@
 EventCreationHelper = {
 		showPublicEventCreationWindow : function() {
-			jQuery('a.invisibleLink').attr("href", "http://bedework.sidan.is/caladmin");
+			jQuery('a.invisibleLink').attr("href", "http://bedework.sidan.is/caladmin/event/showModForm.rdo");
 			jQuery('a.invisibleLink').trigger('click');
 		}
 
