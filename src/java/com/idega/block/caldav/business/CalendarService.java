@@ -2,14 +2,12 @@ package com.idega.block.caldav.business;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.directwebremoting.annotations.Param;
-import org.directwebremoting.annotations.RemoteMethod;
-import org.directwebremoting.annotations.RemoteProxy;
-import org.directwebremoting.spring.SpringCreator;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -21,33 +19,65 @@ import com.idega.block.caldav.bean.Calendar;
 import com.idega.builder.bean.AdvancedProperty;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.idegaweb.IWResourceBundle;
+import com.idega.user.data.User;
+import com.idega.util.ArrayUtil;
+import com.idega.util.CoreConstants;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
 import com.idega.util.xml.XmlUtil;
 
-@Service(CalendarService.BEAN_NAME)
+@Service("calDAVService")
 @Scope(BeanDefinition.SCOPE_SINGLETON)
-@RemoteProxy(creator=SpringCreator.class, creatorParams={
-	@Param(name="beanName", value=CalendarService.BEAN_NAME),
-	@Param(name="javascript", value=CalendarService.DWR_OBJECT)
-}, name=CalendarService.BEAN_NAME)
 public class CalendarService extends DefaultSpringBean {
 
-	static final String BEAN_NAME = "calDAVService";
-	public static final String DWR_OBJECT = "CalDavService";
+	public static final String USER_CALENDAR_META_DATA_KEY = "user_calendar-channel_settings";
 	
-	@RemoteMethod
-	public AdvancedProperty setChannelSubscibtion(String calendarPath) {
+	public List<String> getUserSubscriptions(User user) {
+		String metadata = getCurrentUser().getMetaData(CalendarService.USER_CALENDAR_META_DATA_KEY);
+		String[] paths = StringUtil.isEmpty(metadata) ? null : metadata.split(CoreConstants.COMMA);
+		List<String> calendarPaths = null;
+		if (!ArrayUtil.isEmpty(paths)) {
+			calendarPaths = new ArrayList<String>(Arrays.asList(paths));
+		}
+		if (calendarPaths == null)
+			calendarPaths = new ArrayList<String>();
+		return calendarPaths;
+	}
+	
+	public AdvancedProperty setChannelSubscription(String calendarPath, Boolean add) {
 		IWResourceBundle iwrb = getResourceBundle(getBundle(IWBundleStarter.IW_BUNDLE_IDENTIFIER));
-		AdvancedProperty result = new AdvancedProperty(Boolean.FALSE.toString(), iwrb.getLocalizedString("error_changing_channel_subscibtion",
+		AdvancedProperty result = new AdvancedProperty(Boolean.FALSE.toString(), iwrb.getLocalizedString("error_changing_channel_subscription",
 				"Unable to change channel subscription"));
 		if (StringUtil.isEmpty(calendarPath))
 			return result;
 		
-		//	TODO: store
+		User currentUser = getCurrentUser();
+		if (currentUser == null)
+			return result;
+		
+		List<String> userCalendars = getUserSubscriptions(currentUser);
+		if (add) {
+			if (!userCalendars.contains(calendarPath))
+				userCalendars.add(calendarPath);
+		} else {
+			userCalendars.remove(calendarPath);
+		}
+		StringBuffer paths = new StringBuffer();
+		for (Iterator<String> pathsIter = userCalendars.iterator(); pathsIter.hasNext();) {
+			paths.append(pathsIter.next());
+			if (pathsIter.hasNext())
+				paths.append(CoreConstants.COMMA);
+		}
+		String calendarPaths = paths.toString();
+		if (StringUtil.isEmpty(calendarPaths)) {
+			currentUser.removeMetaData(USER_CALENDAR_META_DATA_KEY);
+		} else {
+			currentUser.setMetaData(USER_CALENDAR_META_DATA_KEY, paths.toString(), String.class.getName());
+		}
+		currentUser.store();
 		
 		result.setId(Boolean.TRUE.toString());
-		result.setValue(iwrb.getLocalizedString("success_changing_channel_subscibtion", "Subscription was successully changed"));
+		result.setValue(iwrb.getLocalizedString("success_changing_channel_subscription", "Subscription was successully changed"));
 		return result;
 	}
 	

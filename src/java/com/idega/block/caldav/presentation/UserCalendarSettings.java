@@ -20,6 +20,7 @@ import com.idega.presentation.TableBodyRowGroup;
 import com.idega.presentation.TableHeaderRowGroup;
 import com.idega.presentation.TableRow;
 import com.idega.presentation.text.Heading3;
+import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.CheckBox;
 import com.idega.util.CoreConstants;
@@ -67,9 +68,11 @@ public class UserCalendarSettings extends Block {
 			return;
 		}
 		
+		List<String> calendarPaths = calendarService.getUserSubscriptions(iwc.getCurrentUser());
+		
 		List<String> sources = new ArrayList<String>();
 		sources.add(CoreConstants.DWR_ENGINE_SCRIPT);
-		sources.add("/dwr/interface/".concat(CalendarService.DWR_OBJECT).concat(".js"));
+		sources.add("/dwr/interface/CalDavService.js");
 		sources.add(jQuery.getBundleURIToJQueryLib());
 		sources.add(web2.getBundleUriToHumanizedMessagesScript());
 		sources.add(bundle.getVirtualPathWithFileNameString("javascript/CalDAVHelper.js"));
@@ -97,7 +100,9 @@ public class UserCalendarSettings extends Block {
 			row.createCell().add(new Text(String.valueOf(number)));
 			row.createCell().add(new Text(calendar.getName()));
 			CheckBox accept = new CheckBox("accept", calendar.getName());
-			accept.setOnClick("CalDAVHelper.manageChannelSubscription('".concat(calendar.getEncodedPath()).concat("', '").concat(loadingMessage).concat("');"));
+			accept.setOnClick("CalDAVHelper.manageChannelSubscription('".concat(accept.getId()).concat("', '").concat(calendar.getEncodedPath()).concat("', '")
+					.concat(loadingMessage).concat("');"));
+			accept.setChecked(calendarPaths.contains(calendar.getEncodedPath()));
 			row.createCell().add(accept);
 			number++;
 		}
@@ -106,6 +111,9 @@ public class UserCalendarSettings extends Block {
 		container.add(distributeEvents);
 		distributeEvents.setStyleClass("distributeEvents");
 		distributeEvents.add(new Heading3(iwrb.getLocalizedString("distribute_events_url", "Distribute all my events to my calanders with the following URL").concat(":")));
+		Link webcal = new Link(iwrb.getLocalizedString("subscribe_to_your_calendars", "Subscribe to your calendars"));
+		webcal.setURL("webcal://");
+		distributeEvents.add(webcal);
 	}
 	
 }
