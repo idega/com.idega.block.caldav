@@ -113,12 +113,24 @@ public class UserCalendarSettings extends Block {
 		distributeEvents.setStyleClass("distributeEvents");
 		distributeEvents.add(new Heading3(iwrb.getLocalizedString("distribute_events_url", "Distribute all my events to my calanders with the following URL").concat(":")));
 		Link webcal = new Link(iwrb.getLocalizedString("subscribe_to_your_calendars", "Subscribe to your calendars"));
-		String url = "webcal://bedework.sidan.is/pubcaldav";
+		
+		String url = "webcal://bedework.sidan.is/pubcaldav/";
+		String calendarPath = null;
 		try {
-			url = url.concat(ListUtil.isEmpty(calendarPaths) ? "public/aliases/Training/Handball" : URLDecoder.decode(calendarPaths.get(0), CoreConstants.ENCODING_UTF8));
+			calendarPath = ListUtil.isEmpty(calendarPaths) ? "public/aliases/Training/Handball" : URLDecoder.decode(calendarPaths.get(0), CoreConstants.ENCODING_UTF8);
 		} catch (Exception e) {}
+		
+		Object viewType = iwc.getSessionAttribute(CoreConstants.PARAMETER_PAGE_VIEW_TYPE);
+		if (viewType instanceof String && CoreConstants.PAGE_VIEW_TYPE_MOBILE.equals(viewType.toString())) {
+			//	Mobile client
+			url = url.concat(calendarPath);
+		} else {
+			//	Desktop client
+			url = url.concat("webcal?calPath=").concat(calendarPath);
+		}
 		webcal.setURL(url);
 		distributeEvents.add(webcal);
+		
 		distributeEvents.add("&nbsp;<a href=\"http://bedework.sidan.is/cal/misc/export.gdo?b=de&calPath=%2Fpublic%2Faliases%2FTraining%2FHandball&guid=CAL-ff808081-321fcf29-0132-1ff90ea4-000000f1demobedework@mysite.edu&recurrenceId=&nocache=no&contentName=CAL-ff808081-321fcf29-0132-1ff90ea4-000000f1demobedework@mysite.edu.ics\">".concat(iwrb.getLocalizedString("download_calendar", "Download calendar")).concat("</a>"));
 	}
 	

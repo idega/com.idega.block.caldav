@@ -89,8 +89,6 @@ public class CalendarService extends DefaultSpringBean {
 			if (doc == null)
 				return Collections.emptyList();
 			
-			System.out.println(XmlUtil.getPrettyJDOMDocument(doc));
-			
 			List<?> categories = doc.getRootElement().getChild("calendars").getChild("calendar").getChildren("calendar");
 			if (ListUtil.isEmpty(categories))
 				return Collections.emptyList();
