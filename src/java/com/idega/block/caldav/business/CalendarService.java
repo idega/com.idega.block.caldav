@@ -10,15 +10,18 @@ import java.util.logging.Level;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.idega.block.caldav.IWBundleStarter;
 import com.idega.block.caldav.bean.Calendar;
 import com.idega.builder.bean.AdvancedProperty;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.idegaweb.IWResourceBundle;
+import com.idega.user.dao.UserDAO;
 import com.idega.user.data.User;
 import com.idega.util.ArrayUtil;
 import com.idega.util.CoreConstants;
@@ -31,9 +34,16 @@ import com.idega.util.xml.XmlUtil;
 public class CalendarService extends DefaultSpringBean {
 
 	public static final String USER_CALENDAR_META_DATA_KEY = "user_calendar-channel_settings";
-	
+
+	@Autowired
+	private UserDAO userDAO;
+
 	public List<String> getUserSubscriptions(User user) {
-		String metadata = getCurrentUser().getMetaData(CalendarService.USER_CALENDAR_META_DATA_KEY);
+		return getUserSubscriptions(userDAO.getUser(Integer.valueOf(user.getId())));
+	}
+
+	public List<String> getUserSubscriptions(com.idega.user.data.bean.User user) {
+		String metadata = user.getMetaData(CalendarService.USER_CALENDAR_META_DATA_KEY);
 		String[] paths = StringUtil.isEmpty(metadata) ? null : metadata.split(CoreConstants.COMMA);
 		List<String> calendarPaths = null;
 		if (!ArrayUtil.isEmpty(paths)) {
@@ -43,18 +53,19 @@ public class CalendarService extends DefaultSpringBean {
 			calendarPaths = new ArrayList<String>();
 		return calendarPaths;
 	}
-	
+
+	@Transactional(readOnly=false)
 	public AdvancedProperty setChannelSubscription(String calendarPath, Boolean add) {
 		IWResourceBundle iwrb = getResourceBundle(getBundle(IWBundleStarter.IW_BUNDLE_IDENTIFIER));
 		AdvancedProperty result = new AdvancedProperty(Boolean.FALSE.toString(), iwrb.getLocalizedString("error_changing_channel_subscription",
 				"Unable to change channel subscription"));
 		if (StringUtil.isEmpty(calendarPath))
 			return result;
-		
-		User currentUser = getCurrentUser();
+
+		com.idega.user.data.bean.User currentUser = getCurrentUser();
 		if (currentUser == null)
 			return result;
-		
+
 		List<String> userCalendars = getUserSubscriptions(currentUser);
 		if (add) {
 			if (!userCalendars.contains(calendarPath))
@@ -74,13 +85,13 @@ public class CalendarService extends DefaultSpringBean {
 		} else {
 			currentUser.setMetaData(USER_CALENDAR_META_DATA_KEY, paths.toString(), String.class.getName());
 		}
-		currentUser.store();
-		
+		userDAO.merge(currentUser);
+
 		result.setId(Boolean.TRUE.toString());
 		result.setValue(iwrb.getLocalizedString("success_changing_channel_subscription", "Subscription was successully changed"));
 		return result;
 	}
-	
+
 	public List<Calendar> getAvailableCalendars() {
 		List<Calendar> cals = new ArrayList<Calendar>();
 		try {
@@ -88,19 +99,19 @@ public class CalendarService extends DefaultSpringBean {
 			Document doc = XmlUtil.getJDOMXMLDocument(url.openStream());
 			if (doc == null)
 				return Collections.emptyList();
-			
+
 			List<?> categories = doc.getRootElement().getChild("calendars").getChild("calendar").getChildren("calendar");
 			if (ListUtil.isEmpty(categories))
 				return Collections.emptyList();
-			
+
 			for (Object category: categories) {
 				if (!(category instanceof Element))
 					continue;
-				
+
 				List<?> calendars = ((Element) category).getChildren("calendar");
 				if (ListUtil.isEmpty(calendars))
 					continue;
-				
+
 				for (Object calendar: calendars) {
 					Element cal = (Element) calendar;
 					Element name = cal.getChild("name");
@@ -112,7 +123,7 @@ public class CalendarService extends DefaultSpringBean {
 					Element encodedPath = cal.getChild("encodedPath");
 					if (encodedPath == null)
 						continue;
-					
+
 					cals.add(new Calendar(name.getTextNormalize(), path.getTextNormalize(), encodedPath.getTextNormalize()));
 				}
 			}
@@ -121,5 +132,5 @@ public class CalendarService extends DefaultSpringBean {
 		}
 		return cals;
 	}
-	
+
 }
