@@ -88,6 +88,7 @@ import javax.faces.context.FacesContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.idega.block.login.remote.RemoteLoginService;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
@@ -104,8 +105,9 @@ import com.idega.util.PresentationUtil;
  */
 @Service
 @Scope("request")
-public class BedeworkLoginServiceBean extends DefaultSpringBean /*implements RemoteLoginService*/ {
+public class BedeworkLoginServiceBean extends DefaultSpringBean implements RemoteLoginService {
 
+	@Override
 	public UIComponent getUIComponentForLogin(FacesContext context) {
 		Layer script = new Layer();
 
@@ -121,7 +123,8 @@ public class BedeworkLoginServiceBean extends DefaultSpringBean /*implements Rem
 		return script;
 	}
 
-    public UIComponent getUIComponentForLogout() {
+    @Override
+	public UIComponent getUIComponentForLogout() {
         // TODO Auto-generated method stub
         return null;
     }
