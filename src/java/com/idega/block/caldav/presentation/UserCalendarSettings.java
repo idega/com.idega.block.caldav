@@ -117,7 +117,7 @@ public class UserCalendarSettings extends Block {
 		String url = "webcal://bedework.sidan.is/pubcaldav/";
 		String calendarPath = null;
 		try {
-			calendarPath = ListUtil.isEmpty(calendarPaths) ? "public/aliases/Training/Handball" : URLDecoder.decode(calendarPaths.get(0), CoreConstants.ENCODING_UTF8);
+			calendarPath = ListUtil.isEmpty(calendarPaths) ? "public/aliases/Training/Football club" : URLDecoder.decode(calendarPaths.get(0), CoreConstants.ENCODING_UTF8);
 		} catch (Exception e) {}
 		
 		Object viewType = iwc.getSessionAttribute(CoreConstants.PARAMETER_PAGE_VIEW_TYPE);
@@ -131,7 +131,7 @@ public class UserCalendarSettings extends Block {
 		webcal.setURL(url);
 		distributeEvents.add(webcal);
 		
-		distributeEvents.add("&nbsp;<a href=\"http://bedework.sidan.is/cal/misc/export.gdo?b=de&calPath=%2Fpublic%2Faliases%2FTraining%2FHandball&guid=CAL-ff808081-321fcf29-0132-1ff90ea4-000000f1demobedework@mysite.edu&recurrenceId=&nocache=no&contentName=CAL-ff808081-321fcf29-0132-1ff90ea4-000000f1demobedework@mysite.edu.ics\">".concat(iwrb.getLocalizedString("download_calendar", "Download calendar")).concat("</a>"));
+		distributeEvents.add("&nbsp;<a href=\"http://bedework.sidan.is/cal/misc/export.gdo?b=de&calPath=%2Fpublic%2Faliases%2FTraining%2FFootball+club&guid=CAL-ff808081-321fcf29-0133-17b81f58-000013efdemobedework@mysite.edu&recurrenceId=&nocache=no&contentName=CAL-ff808081-321fcf29-0133-17b81f58-000013efdemobedework@mysite.edu.ics\">".concat(iwrb.getLocalizedString("download_calendar", "Download calendar")).concat("</a>"));
 	}
 	
 }
