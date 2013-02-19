@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.jdom.Document;
-import org.jdom.Element;
+import org.jdom2.Document;
+import org.jdom2.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
