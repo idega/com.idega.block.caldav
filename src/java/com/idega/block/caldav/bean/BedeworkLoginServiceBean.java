@@ -8,6 +8,7 @@
  * of Iceland, having its principal place of business in Reykjavik,
  * Iceland, hereinafter after referred to as "Manufacturer" and Agura
  * IT hereinafter referred to as "Licensee".
+<<<<<<< HEAD
  * 1. License Grant: Upon completion of this agreement, the source
  *     code that may be made available according to the documentation for
  *     a particular software product (Software) from Manufacturer
@@ -24,6 +25,24 @@
  *     be an extension of the Software License Agreement for the associated
  *     product. No additional amendment or modification shall be made
  *     to this Agreement except in writing signed by Licensee and
+=======
+ * 1. License Grant: Upon completion of this agreement, the source 
+ *     code that may be made available according to the documentation for 
+ *     a particular software product (Software) from Manufacturer 
+ *     (Source Code) shall be provided to Licensee, provided that 
+ *     (1) funds have been received for payment of the License for Software and 
+ *     (2) the appropriate License has been purchased as stated in the 
+ *     documentation for Software. As used in this License Agreement, 
+ *      Licensee  shall also mean the individual using or installing 
+ *     the source code together with any individual or entity, including 
+ *     but not limited to your employer, on whose behalf you are acting 
+ *     in using or installing the Source Code. By completing this agreement, 
+ *     Licensee agrees to be bound by the terms and conditions of this Source 
+ *     Code License Agreement. This Source Code License Agreement shall 
+ *     be an extension of the Software License Agreement for the associated 
+ *     product. No additional amendment or modification shall be made 
+ *     to this Agreement except in writing signed by Licensee and 
+>>>>>>> 29395af0a18d9a01bb3c81e9ff9a9c211c324b20
  *     Manufacturer. This Agreement is effective indefinitely and once
  *     completed, cannot be terminated. Manufacturer hereby grants to
  *     Licensee a non-transferable, worldwide license during the term of
