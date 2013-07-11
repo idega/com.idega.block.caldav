@@ -8,9 +8,7 @@
 	</parent>
 	<name>CalDAV</name>
 	<packaging>jar</packaging>
-	<groupId>com.idega.block.addon</groupId>
 	<artifactId>com.idega.block.caldav</artifactId>
-	<version>5.0.0-SNAPSHOT</version>
 	<inceptionYear>2011</inceptionYear>
 	<description>CalDAV</description>
 	<developers>
@@ -29,11 +27,22 @@
 			<roles />
 		</developer>
 	</developers>
+	<repositories>
+		<repository>
+      		<id>google-api-services</id>
+     	 	<url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
+    	</repository>	
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>com.idega.block.platform</groupId>
 			<artifactId>com.idega.core</artifactId>
 		</dependency>
+		<dependency>
+      		<groupId>com.google.apis</groupId>
+      		<artifactId>google-api-services-calendar</artifactId>
+      		<version>v3-rev32-1.13.2-beta</version>
+    	</dependency>
 		<dependency>
 			<groupId>com.idega.block.platform</groupId>
 			<artifactId>com.idega.block.web2.0</artifactId>
